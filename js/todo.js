@@ -29,8 +29,8 @@ function removeTodo(e) {
 function paintTodo(todo) {
   const todoLi = document.createElement("li");
   todoLi.id = todo.id;
-  const chx = document.createElement("input");
-  chx.type = 'checkbox';
+//   const chx = document.createElement("input");
+//   chx.type = 'checkbox';
   const span = document.createElement("span");
   const btn = document.createElement("button");
 
@@ -38,7 +38,7 @@ function paintTodo(todo) {
   btn.innerText = "❌";
   btn.addEventListener("click", removeTodo);
 
-  todoLi.appendChild(chx);
+  //todoLi.appendChild(chx);
   todoLi.appendChild(span);
   todoLi.appendChild(btn);
   todoList.appendChild(todoLi);
