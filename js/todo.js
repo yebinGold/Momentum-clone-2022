@@ -23,7 +23,7 @@ function removeTodo(e) {
 
   li.remove();
 
-  saveDone(li.id, li.children[1].innerText);
+  saveDone(li.id, li.children[0].innerText);
 }
 
 function paintTodo(todo) {
