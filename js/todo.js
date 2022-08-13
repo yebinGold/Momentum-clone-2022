@@ -1,40 +1,49 @@
 const todoForm = document.querySelector("#todo-form");
 const todoInput = todoForm.querySelector("input");
 const todoList = document.querySelector("#todo-list");
-const doneList = document.querySelector("#done-list");
-const clearBtn = document.querySelector("#clearBtn");
+const progress = document.querySelector('#percent');
 
 const TODOS_KEY = "todos";
 
 let todos = [];
-let doneTodos = [];
 
 
 // todos list
 function saveTodo() {
-  localStorage.setItem("todos", JSON.stringify(todos));
+  localStorage.setItem(TODOS_KEY, JSON.stringify(todos));
 }
 
 function removeTodo(e) {
   const li = e.target.parentElement;
 
+  todos = JSON.parse(localStorage.getItem(TODOS_KEY));
   todos = todos.filter((todo) => todo.id !== parseInt(li.id));
   saveTodo();
+  countDone();
 
   li.remove();
-
-  saveDone(li.id, li.children[0].innerText);
 }
+
 function checkTodo(e){
   const li = e.target.parentElement;
   li.children[0].classList.toggle("check");
+
+  todos = JSON.parse(localStorage.getItem(TODOS_KEY));
+  todos = todos.map(todo => {
+    if(todo.id === parseInt(li.id)){
+      const temp = todo.checked;
+      todo.checked = !temp;
+    }
+    return todo;
+  })
+  saveTodo();
+  countDone();
 }
 
 function paintTodo(todo) {
   const todoLi = document.createElement("li");
   todoLi.id = todo.id;
-//   const chx = document.createElement("input");
-//   chx.type = 'checkbox';
+
   const span = document.createElement("span");
   const chx = document.createElement("button");
   const btn = document.createElement("button");
@@ -45,7 +54,11 @@ function paintTodo(todo) {
   chx.addEventListener("click", checkTodo);
   btn.addEventListener("click", removeTodo);
 
-  //todoLi.appendChild(chx);
+  if(todo.checked){
+    span.classList.add("check");
+  }
+
+
   todoLi.appendChild(span);
   todoLi.appendChild(chx);
   todoLi.appendChild(btn);
@@ -59,6 +72,7 @@ function handleTodoSubmit(e) {
   const todoObj = {
     text: todo,
     id: randomId,
+    checked: false,
   };
 
   todoInput.value = "";
@@ -66,43 +80,16 @@ function handleTodoSubmit(e) {
   todos.push(todoObj);
   paintTodo(todoObj);
   saveTodo();
-}
-
-
-// done todos list
-function saveDone(id, text) {
-  const done = {
-    id: id,
-    text: text,
-  };
-  doneTodos.push(done);
-  localStorage.setItem("doneTodos", JSON.stringify(doneTodos));
-  paintDone(done);
-}
-function paintDone(item) {
-  const doneLi = document.createElement("li");
-  doneLi.id = item.id;
-  const span = document.createElement("span");
-  span.innerText = item.text;
-
-  doneLi.appendChild(span);
-  doneList.appendChild(doneLi);
-}
-function clearDone() {
-  localStorage.setItem("doneTodos", JSON.stringify([]));
-  while (doneList.hasChildNodes()) {
-    doneList.removeChild(doneList.firstChild);
-  }
+  countDone();
 }
 
 
 // 이벤트 핸들러 추가
 todoForm.addEventListener("submit", handleTodoSubmit);
-clearBtn.addEventListener("click", clearDone);
 
 
 // 화면 렌더링
-const savedTodos = localStorage.getItem("todos");
+const savedTodos = localStorage.getItem(TODOS_KEY);
 
 if (savedTodos) {
   // not null
@@ -110,10 +97,13 @@ if (savedTodos) {
   parsedTodos.forEach((item) => {
     paintTodo(item);
   });
+  countDone();
 }
 
-const savedDone = localStorage.getItem("doneTodos");
-if (savedDone) {
-  const parsedDone = JSON.parse(localStorage.getItem("doneTodos"));
-  parsedDone.forEach((item) => paintDone(item));
+
+function countDone(){
+  const todos = JSON.parse(localStorage.getItem(TODOS_KEY));
+  const len = todos.length;
+  const done = todos.filter(todo => todo.checked === true).length;
+  progress.innerText = parseInt(done / len * 100) + '%'
 }

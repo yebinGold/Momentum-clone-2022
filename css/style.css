@@ -113,7 +113,7 @@ input {
   border: 1px solid whitesmoke;
   background-color: rgba(255, 255, 255, 0.3);
   border-radius: 15px;
-  padding: 8px 30px;
+  padding: 8px 20px;
   padding-bottom: 15px;
   position: absolute;
   bottom: 20%;
@@ -134,11 +134,14 @@ h4{
 
 }.list2{
   right: 5%;
+  text-align: center;
 }
-.list2 >div{
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+#percent{
+  margin-top: 50px;
+  color:rgb(217, 106, 69);
+  font-weight: 800;
+  letter-spacing: 0.5rem;
+  font-size: 48px;
 }
 
 #todo-form {
@@ -170,16 +173,17 @@ li{
   align-items: center;
   margin: 5px 0;
 }
-ul button {
-  background-color: transparent;
-  outline: none;
-  border: none;
-  cursor: pointer;
-}
+
 li input{
   background-color: transparent;
   border: 1px solid whitesmoke;
   margin-right: 7px;
+}
+li button{
+  background-color: transparent;
+  outline: none;
+  border: none;
+  cursor: pointer;
 }
 
 .btn{
@@ -198,9 +202,4 @@ li input{
   position: absolute;
   top: 7%;
   right: 5%;
-}
-#clearBtn{
-  text-align: center;
-  width: 80px;
-  margin: 0 auto;
 }
