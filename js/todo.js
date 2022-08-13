@@ -25,6 +25,10 @@ function removeTodo(e) {
 
   saveDone(li.id, li.children[0].innerText);
 }
+function checkTodo(e){
+  const li = e.target.parentElement;
+  li.children[0].classList.toggle("check");
+}
 
 function paintTodo(todo) {
   const todoLi = document.createElement("li");
@@ -32,14 +36,18 @@ function paintTodo(todo) {
 //   const chx = document.createElement("input");
 //   chx.type = 'checkbox';
   const span = document.createElement("span");
+  const chx = document.createElement("button");
   const btn = document.createElement("button");
 
   span.innerText = todo.text;
+  chx.innerText = '✔️';
   btn.innerText = "❌";
+  chx.addEventListener("click", checkTodo);
   btn.addEventListener("click", removeTodo);
 
   //todoLi.appendChild(chx);
   todoLi.appendChild(span);
+  todoLi.appendChild(chx);
   todoLi.appendChild(btn);
   todoList.appendChild(todoLi);
 }
