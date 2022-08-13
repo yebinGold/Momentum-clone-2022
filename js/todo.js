@@ -105,5 +105,7 @@ function countDone(){
   const todos = JSON.parse(localStorage.getItem(TODOS_KEY));
   const len = todos.length;
   const done = todos.filter(todo => todo.checked === true).length;
-  progress.innerText = parseInt(done / len * 100) + '%'
+  const progressForNow = parseInt(done / len * 100)
+
+  progress.innerText = isNaN(progressForNow) ? "0%" : progressForNow + '%'
 }
